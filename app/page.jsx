@@ -18,15 +18,15 @@ import Login from "@/components/login";
 import Logout from "@/components/logout";
 import LargeUploader from "@/components/largeUpload";
 const client = new S3Client({
-  region: 'us-east-2',
-  // credentials: fromCognitoIdentityPool({
-  //   clientConfig: { region: "us-east-2" },
-  //   identityPoolId: "us-east-2:a5f13f29-38c5-439c-b15a-1b8551623888",
-  // }),
-  credentials: {
-    accessKeyId: "AKIA5SPBTTURUSEMQI7B",
-    secretAccessKey: "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"
-  },
+  region: "us-east-2",
+  credentials: fromCognitoIdentityPool({
+    clientConfig: { region: "us-east-2" },
+    identityPoolId: "us-east-2:a5f13f29-38c5-439c-b15a-1b8551623888",
+  }),
+  // credentials: {
+  //   accessKeyId: "AKIA5SPBTTURUSEMQI7B",
+  //   secretAccessKey: "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"
+  // },
 });
 
 const bucketConnectors = [
@@ -66,8 +66,6 @@ export default function Home() {
     const command = new ListObjectsCommand({ Bucket: "getstartedbucket-01" });
     client.send(command).then(({ Contents }) => setObjects(Contents));
   }, []);
-
-  
 
   const resetUploadStatus = () => {
     setUploadStatus("");
@@ -140,20 +138,19 @@ export default function Home() {
       });
       const totalBytes = file.size;
       const uploadProgress = (progress) => {
-        setProgress(prevProgress => (progress.loaded / totalBytes) * 100);
-        console.log('Progress: ',progress)
+        setProgress((prevProgress) => (progress.loaded / totalBytes) * 100);
+        console.log("Progress: ", progress);
       };
       await client.send(command, {
-         partSize: 5 * 1024 * 1024,
-          onUploadProgress: uploadProgress
-         });
+        partSize: 5 * 1024 * 1024,
+        onUploadProgress: uploadProgress,
+      });
       setObjects((prevObjects) => [
         ...prevObjects,
         {
           Key: file.name,
           // other props like Size, LastModified, etc
         },
-       
       ]);
       // On success
       setUploadStatus("Success");
@@ -181,8 +178,18 @@ export default function Home() {
     }
   }
 
-  if (isLoading) return <main className={styles.main}><div>Loading...</div></main>;
-  if (error) return    <main className={styles.main}><div>{error.message}</div></main>;
+  if (isLoading)
+    return (
+      <main className={styles.main}>
+        <div>Loading...</div>
+      </main>
+    );
+  if (error)
+    return (
+      <main className={styles.main}>
+        <div>{error.message}</div>
+      </main>
+    );
 
   return (
     <main className={styles.main}>
@@ -205,7 +212,13 @@ export default function Home() {
               ))}
             </select>
             <input type="file" onChange={settingFile} ref={fileInputRef} />
-            {uploadStatus !== "" && <> <div>Progress: {progress.toFixed(2)}%</div><p>{uploadStatus}</p></>}
+            {uploadStatus !== "" && (
+              <>
+                {" "}
+                <div>Progress: {progress.toFixed(2)}%</div>
+                <p>{uploadStatus}</p>
+              </>
+            )}
             {uploadStatus !== "Uploading" ||
               ("" && (
                 <div>
@@ -231,11 +244,12 @@ export default function Home() {
               Upload
             </button>
             <button onClick={resetUploadStatus}>Reset</button>
-            <Logout/>
+            <Logout />
           </div>
         </>
-      ): <Login/>}
-      
+      ) : (
+        <Login />
+      )}
     </main>
     // <LargeUploader/>
   );
