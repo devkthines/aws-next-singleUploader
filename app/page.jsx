@@ -18,7 +18,7 @@ import Login from "@/components/login";
 import Logout from "@/components/logout";
 import LargeUploader from "@/components/largeUpload";
 const client = new S3Client({
-  region: "us-east-2",
+  region: "",
   credentials: fromCognitoIdentityPool({
     clientConfig: { region: "" },
     identityPoolId: "",
@@ -51,7 +51,7 @@ export default function Home() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const command = new ListObjectsCommand({ Bucket: "getstartedbucket-01" });
+    const command = new ListObjectsCommand({ Bucket: "" });
     client.send(command).then(({ Contents }) => setObjects(Contents));
   }, []);
 
