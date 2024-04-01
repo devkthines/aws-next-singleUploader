@@ -16,34 +16,33 @@ import {
   };
 
   const client = new S3Client({
-    region: 'us-east-2',
+    region: '',
     credentials: fromCognitoIdentityPool({
-      clientConfig: { region: "us-east-2" },
-      identityPoolId: "us-east-2:a5f13f29-38c5-439c-b15a-1b8551623888",
+      clientConfig: { region: "" },
+      identityPoolId: "",
     }),
     // credentials: {
-    //   accessKeyId: "AKIA5SPBTTURUSEMQI7B",
-    //   secretAccessKey: "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"
+
     // },
   });
 
   
 const bucketConnectors = [
     {
-      bucket: "getstartedbucket-01",
-      link: "https://d3f3xhuosr3mrt.cloudfront.net/",
+      bucket: "",
+      link: "",
     },
     {
-      bucket: "getstartedbucket-02",
-      link: "https://dsxm9hdw74gkj.cloudfront.net/",
+      bucket: "",
+      link: "",
     },
     {
-      bucket: "getstartedbucket-03",
-      link: "https://d10czu96rxwtth.cloudfront.net/",
+      bucket: "",
+      link: "",
     },
     {
-      bucket: "getstartedbucket-04",
-      link: "https://d371a58l8its3s.cloudfront.net/",
+      bucket: "",
+      link: "",
     },
   ];
 export default function LargeUploader(){
